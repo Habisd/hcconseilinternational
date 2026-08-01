@@ -1,51 +1,685 @@
-# H&C Conseil International - GitHub Pages
+:root {
+  --ink: #201b4f;
+  --navy: #0f193d;
+  --muted: #61667b;
+  --line: #dce4ea;
+  --paper: #ffffff;
+  --soft: #f4f8f9;
+  --teal: #15967e;
+  --blue: #2f80c2;
+  --gold: #f7b72e;
+  --coral: #f05742;
+}
 
-Site vitrine statique pret pour GitHub Pages.
+* {
+  box-sizing: border-box;
+}
 
-## Publication recommandee
+html {
+  scroll-behavior: smooth;
+}
 
-1. Creer un depot GitHub, par exemple `Habisd/hc-conseil-international`.
-2. Ajouter tout le contenu de ce dossier a la racine du depot.
-3. Dans GitHub : `Settings` -> `Pages`.
-4. Source : `Deploy from a branch`.
-5. Branch : `main`, folder : `/root`.
-6. Custom domain : `hcconseilinternational.com`.
-7. Activer `Enforce HTTPS` quand GitHub le permet.
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
-## DNS GitHub Pages
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-Pour le domaine racine :
+img {
+  display: block;
+  max-width: 100%;
+}
 
-```text
-A @ 185.199.108.153
-A @ 185.199.109.153
-A @ 185.199.110.153
-A @ 185.199.111.153
-```
+.site-header {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(32, 27, 79, 0.1);
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 16px clamp(20px, 5vw, 72px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
 
-Pour `www`, si l'enregistrement peut etre modifie :
+.brand {
+  align-items: center;
+  display: flex;
+  font-size: clamp(1rem, 2vw, 1.38rem);
+  font-weight: 850;
+  gap: 12px;
+}
 
-```text
-CNAME www Habisd.github.io
-```
+.brand img {
+  height: 44px;
+  object-fit: contain;
+  width: 44px;
+}
 
-GitHub indique que la propagation DNS peut prendre jusqu'a 24 heures.
+nav {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 700;
+  gap: 8px 20px;
+  justify-content: flex-end;
+}
 
-## Formulaire de contact
+nav a:hover {
+  color: var(--blue);
+}
 
-Le site contient maintenant :
+.hero {
+  display: grid;
+  min-height: calc(100vh - 77px);
+  overflow: hidden;
+  padding: clamp(56px, 9vw, 118px) clamp(20px, 5vw, 72px);
+  position: relative;
+}
 
-- un formulaire de contact complet ;
-- une fenetre `Appeler` avec lien telephonique, WhatsApp et demande de rappel ;
-- un fichier `app.js` pret a envoyer les messages vers un Cloudflare Worker.
+.hero-image,
+.hero-overlay {
+  inset: 0;
+  position: absolute;
+}
 
-Avant publication finale, remplacer dans `app.js` :
+.hero-image {
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  width: 100%;
+}
 
-```js
-const CONTACT_ENDPOINT = "https://hc-conseil-contact.YOUR_SUBDOMAIN.workers.dev";
-```
+.hero-overlay {
+  background:
+    linear-gradient(90deg, rgba(15, 25, 61, 0.93), rgba(15, 25, 61, 0.73) 44%, rgba(15, 25, 61, 0.18)),
+    linear-gradient(0deg, rgba(21, 150, 126, 0.12), rgba(247, 183, 46, 0.1));
+}
 
-par l'URL reelle du Worker Cloudflare.
+.hero-content {
+  align-self: center;
+  color: #ffffff;
+  max-width: 810px;
+  position: relative;
+  z-index: 1;
+}
 
-Le Worker pret a utiliser est dans le dossier voisin `hc-conseil-contact-worker`.
-La cle Resend doit etre ajoutee dans Cloudflare comme secret `RESEND_API_KEY`, jamais dans ce dossier GitHub Pages.
+.eyebrow {
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.hero .eyebrow,
+.contact .eyebrow {
+  color: var(--gold);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(3.2rem, 7.4vw, 7.4rem);
+  line-height: 0.94;
+  margin-bottom: 24px;
+  max-width: 850px;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.9rem);
+  line-height: 1.02;
+  margin-bottom: 18px;
+}
+
+h3 {
+  font-size: 1.28rem;
+  margin-bottom: 10px;
+}
+
+.lede,
+.intro p,
+.feature-band p,
+.profile p,
+.contact p,
+.service-card p,
+.step-card p {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  line-height: 1.72;
+}
+
+.lede {
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 690px;
+}
+
+.hero-actions,
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.button {
+  align-items: center;
+  border-radius: 6px;
+  display: inline-flex;
+  font-weight: 850;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 22px;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: var(--coral);
+  color: #ffffff;
+}
+
+.secondary {
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #ffffff;
+}
+
+.ghost {
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  color: #ffffff;
+}
+
+.proof-band {
+  background: var(--navy);
+  color: #ffffff;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.proof-band article {
+  background:
+    linear-gradient(135deg, rgba(21, 150, 126, 0.17), rgba(47, 128, 194, 0.08)),
+    var(--navy);
+  min-height: 168px;
+  padding: clamp(24px, 4vw, 42px);
+}
+
+.proof-band span {
+  color: var(--gold);
+  display: inline-block;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.proof-band p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  line-height: 1.58;
+  margin: 0;
+}
+
+.section,
+.feature-band,
+.profile,
+.contact {
+  padding: clamp(64px, 8vw, 112px) clamp(20px, 5vw, 72px);
+}
+
+.section {
+  margin: 0 auto;
+  max-width: 1240px;
+  width: 100%;
+}
+
+.intro,
+.missions {
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1fr);
+}
+
+.intro p {
+  color: var(--ink);
+  font-size: clamp(1.18rem, 2vw, 1.55rem);
+  font-weight: 700;
+}
+
+.section-heading {
+  max-width: 760px;
+}
+
+.service-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 36px;
+}
+
+.service-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 50px rgba(32, 27, 79, 0.08);
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.service-card img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  width: 100%;
+}
+
+.service-card div {
+  padding: 22px;
+}
+
+.service-card h3 {
+  color: var(--ink);
+}
+
+.service-card p {
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+.feature-band {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(21, 150, 126, 0.09), rgba(247, 183, 46, 0.1)),
+    var(--soft);
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr);
+}
+
+.feature-band img,
+.profile img {
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  box-shadow: 0 24px 64px rgba(32, 27, 79, 0.15);
+  object-fit: cover;
+  width: 100%;
+}
+
+.steps {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 36px;
+}
+
+.step-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+  position: relative;
+}
+
+.step-card::before {
+  background: linear-gradient(90deg, var(--teal), var(--blue), var(--gold), var(--coral));
+  content: "";
+  height: 4px;
+  inset: 0 0 auto;
+  position: absolute;
+}
+
+.step-card span {
+  color: var(--blue);
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 950;
+  margin-bottom: 24px;
+}
+
+.step-card p {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.missions {
+  border-top: 1px solid var(--line);
+}
+
+.mission-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mission-list p {
+  align-items: center;
+  background: var(--soft);
+  border-left: 4px solid var(--teal);
+  border-radius: 6px;
+  color: var(--ink);
+  display: flex;
+  font-weight: 760;
+  margin: 0;
+  min-height: 54px;
+  padding: 12px 16px;
+}
+
+.profile {
+  align-items: center;
+  background: var(--navy);
+  color: #ffffff;
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+}
+
+.profile p {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.contact {
+  align-items: center;
+  background:
+    linear-gradient(120deg, rgba(32, 27, 79, 0.98), rgba(21, 150, 126, 0.88)),
+    var(--ink);
+  color: #ffffff;
+  display: grid;
+  gap: clamp(28px, 5vw, 68px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.76fr);
+}
+
+.contact p {
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 690px;
+}
+
+.contact-actions {
+  justify-content: flex-end;
+  margin-top: 0;
+}
+
+.contact-panel {
+  background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.contact-form,
+.callback-form {
+  display: grid;
+  gap: 16px;
+}
+
+.field-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+label {
+  color: rgba(255, 255, 255, 0.88);
+  display: grid;
+  font-size: 0.88rem;
+  font-weight: 800;
+  gap: 8px;
+}
+
+input,
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 6px;
+  color: var(--ink);
+  font: inherit;
+  min-height: 48px;
+  outline: none;
+  padding: 12px 14px;
+  width: 100%;
+}
+
+textarea {
+  min-height: 132px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(247, 183, 46, 0.24);
+}
+
+.consent {
+  align-items: start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 18px minmax(0, 1fr);
+}
+
+.consent input {
+  min-height: 18px;
+  margin-top: 3px;
+}
+
+.form-actions,
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-status {
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 800;
+  margin: 0;
+  min-height: 24px;
+}
+
+.form-status[data-type="success"] {
+  color: #bff3dc;
+}
+
+.form-status[data-type="error"] {
+  color: #ffd3cd;
+}
+
+.hp-field {
+  height: 0;
+  left: -9999px;
+  opacity: 0;
+  position: absolute;
+  width: 0;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal {
+  display: none;
+  inset: 0;
+  padding: 20px;
+  position: fixed;
+  z-index: 40;
+}
+
+.modal.is-open {
+  align-items: center;
+  display: grid;
+  justify-items: center;
+}
+
+.modal-backdrop {
+  background: rgba(15, 25, 61, 0.72);
+  inset: 0;
+  position: absolute;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 28px 90px rgba(15, 25, 61, 0.34);
+  color: var(--ink);
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(220px, 0.78fr) minmax(280px, 1fr);
+  max-height: min(92vh, 820px);
+  max-width: 980px;
+  overflow: auto;
+  padding: clamp(18px, 3vw, 32px);
+  position: relative;
+  width: min(100%, 980px);
+}
+
+.modal-card img {
+  border-radius: 8px;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.modal-card p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.modal-card label {
+  color: var(--ink);
+}
+
+.modal-card .consent span {
+  color: var(--muted);
+}
+
+.modal-close {
+  align-items: center;
+  background: var(--ink);
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.5rem;
+  height: 40px;
+  justify-content: center;
+  line-height: 1;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 40px;
+}
+
+.modal-secondary {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.callback-form {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 22px;
+}
+
+.callback-form .form-status {
+  color: var(--muted);
+}
+
+.callback-form .form-status[data-type="success"] {
+  color: var(--teal);
+}
+
+.callback-form .form-status[data-type="error"] {
+  color: var(--coral);
+}
+
+button[disabled] {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+@media (max-width: 1020px) {
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .site-header,
+  nav {
+    justify-content: flex-start;
+  }
+
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(90deg, rgba(15, 25, 61, 0.94), rgba(15, 25, 61, 0.72));
+  }
+
+  .proof-band,
+  .intro,
+  .feature-band,
+  .steps,
+  .missions,
+  .profile,
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-actions {
+    justify-content: flex-start;
+  }
+
+  .modal-card {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-card img {
+    max-height: 260px;
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 560px) {
+  h1 {
+    font-size: 2.85rem;
+  }
+
+  .brand span {
+    max-width: 230px;
+  }
+
+  .service-grid,
+  .mission-list,
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
