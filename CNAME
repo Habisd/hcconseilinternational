@@ -1,4 +1,4 @@
-const CONTACT_ENDPOINT = "https://hc-conseil-contact.YOUR_SUBDOMAIN.workers.dev";
+const CONTACT_ENDPOINT = "https://hc-conseil-contact.bah-habib-sidi.workers.dev";
 
 const callModal = document.querySelector("#call-modal");
 const openCallButtons = document.querySelectorAll("[data-open-call]");
