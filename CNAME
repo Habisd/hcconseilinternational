@@ -1,1 +1,118 @@
-hcconseilinternational.com
+const CONTACT_ENDPOINT = "https://hc-conseil-contact.YOUR_SUBDOMAIN.workers.dev";
+
+const callModal = document.querySelector("#call-modal");
+const openCallButtons = document.querySelectorAll("[data-open-call]");
+const closeCallButtons = document.querySelectorAll("[data-close-call]");
+const contactForm = document.querySelector("#contact-form");
+const callbackForm = document.querySelector("#callback-form");
+const contactStatus = document.querySelector("#form-status");
+const callbackStatus = document.querySelector("#callback-status");
+
+function isEndpointConfigured() {
+  return CONTACT_ENDPOINT && !CONTACT_ENDPOINT.includes("YOUR_SUBDOMAIN");
+}
+
+function openCallModal() {
+  if (!callModal) return;
+  callModal.classList.add("is-open");
+  callModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  callModal.querySelector("a, button, input")?.focus();
+}
+
+function closeCallModal() {
+  if (!callModal) return;
+  callModal.classList.remove("is-open");
+  callModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+function setStatus(element, message, type = "info") {
+  if (!element) return;
+  element.textContent = message;
+  element.dataset.type = type;
+}
+
+function formToPayload(form, type) {
+  const data = new FormData(form);
+  return {
+    type,
+    website: String(data.get("website") || ""),
+    name: String(data.get("name") || "").trim(),
+    organization: String(data.get("organization") || "").trim(),
+    email: String(data.get("email") || "").trim(),
+    phone: String(data.get("phone") || "").trim(),
+    subject: String(data.get("subject") || "").trim(),
+    message: String(data.get("message") || "").trim(),
+    preferredTime: String(data.get("preferredTime") || "").trim(),
+    consent: data.get("consent") === "on",
+    page: window.location.href,
+  };
+}
+
+async function submitForm(form, type, statusElement) {
+  if (!isEndpointConfigured()) {
+    setStatus(
+      statusElement,
+      "Formulaire presque prêt : remplacez CONTACT_ENDPOINT dans app.js par l'adresse de votre Worker Cloudflare.",
+      "error"
+    );
+    return;
+  }
+
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalText = submitButton?.textContent;
+  const payload = formToPayload(form, type);
+
+  submitButton?.setAttribute("disabled", "disabled");
+  if (submitButton) submitButton.textContent = "Envoi...";
+  setStatus(statusElement, "Envoi du message en cours...", "info");
+
+  try {
+    const response = await fetch(CONTACT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || result.ok === false) {
+      throw new Error(result.error || "Le message n'a pas pu être envoyé.");
+    }
+
+    form.reset();
+    setStatus(statusElement, "Merci, votre demande a bien été envoyée.", "success");
+  } catch {
+    setStatus(
+      statusElement,
+      "L'envoi a échoué. Vous pouvez écrire directement à bah.habib.sidi@gmail.com ou appeler le +33 6 45 79 73 98.",
+      "error"
+    );
+  } finally {
+    submitButton?.removeAttribute("disabled");
+    if (submitButton && originalText) submitButton.textContent = originalText;
+  }
+}
+
+openCallButtons.forEach((button) => {
+  button.addEventListener("click", openCallModal);
+});
+
+closeCallButtons.forEach((button) => {
+  button.addEventListener("click", closeCallModal);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeCallModal();
+});
+
+contactForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  submitForm(contactForm, "contact", contactStatus);
+});
+
+callbackForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  submitForm(callbackForm, "callback", callbackStatus);
+});
