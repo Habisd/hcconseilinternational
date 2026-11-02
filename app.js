@@ -54,7 +54,7 @@ async function submitForm(form, type, statusElement) {
   if (!isEndpointConfigured()) {
     setStatus(
       statusElement,
-      "Formulaire presque pret : remplacez CONTACT_ENDPOINT dans app.js par l'adresse de votre Worker Cloudflare.",
+      "Formulaire presque prêt : remplacez CONTACT_ENDPOINT dans app.js par l'adresse de votre Worker Cloudflare.",
       "error"
     );
     return;
@@ -82,11 +82,11 @@ async function submitForm(form, type, statusElement) {
     }
 
     form.reset();
-    setStatus(statusElement, "Merci, votre demande a bien ete envoyee.", "success");
+    setStatus(statusElement, "Merci, votre demande a bien été envoyée.", "success");
   } catch {
     setStatus(
       statusElement,
-      "L'envoi a echoue. Vous pouvez ecrire directement a bah.habib.sidi@gmail.com ou appeler le +33 6 45 79 73 98.",
+      "L'envoi a échoué. Vous pouvez écrire directement à contact@hcconseilinternational.com ou appeler le +33 6 45 79 73 98.",
       "error"
     );
   } finally {
